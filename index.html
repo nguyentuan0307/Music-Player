@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Music Player</title>
+    <link rel="icon" type="image/x-icon" href="favicon-32.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="./css/all.css" />
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./node_modules/phosphor-icons/src/css/icons.css" /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <script src="https://unpkg.com/phosphor-icons"></script>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+    <!-- Top bar -->
+    <!-- <div id="menu-bar">
+      <div class="left">
+        <img class="favicon-app" src="favicon-32.png" />
+        <p class="title-app">Music Player</p>
+      </div>
+      <div class="right">
+        <button class="menubar-btn" id="minimize-btn">
+          <i class="fa-solid fa-window-minimize"></i>
+        </button>
+        <button class="menubar-btn" id="max-unmax-btn">
+          <i class="fa-regular fa-square"></i>
+        </button>
+        <button class="menubar-btn" id="close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div> -->
+    <div class="container" onclick="start()">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <img class="favicon" src="favicon-32.png" alt="" />
+                <p class="title">Music Player</p>
+            </div>
+            <div class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openListSong(event, 'songs')" id="defaultOpen">
+              Songs
+            </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openListSong(event, 'your-libary')">
+              Your Library
+            </a>
+                </li>
+            </div>
+            <div class="search">
+                <input type="search" class="search-input" placeholder="Search" />
+                <i class="search-icon fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="open">
+                <div class="open-button">
+                    <label class="open-label" for="file-input">
+              <i class="open-icon fa-regular fa-folder-open"></i>
+              Open file(s)
+            </label>
+                    <input type="file" id="file-input" />
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-button" onclick="myFunction()">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+                    <div class="dropdown-content" id="myDropdown">
+                        <div class="open-button">
+                            <label class="open-label" for="file-input">
+                  <i class="open-icon fa-regular fa-folder-open"></i>
+                  <div class="open-text">
+                    <h3>Open file(s)</h3>
+                    <p>Browse for file to play</p>
+                  </div>
+                </label>
+                            <input type="file" id="file-input" />
+                        </div>
+                        <div class="open-button">
+                            <label class="open-label" for="button-input">
+                  <i class="open-icon fa-solid fa-folder-plus"></i>
+                  <div class="open-text">
+                    <h3>Open forder</h3>
+                    <p>Choose a folder and play all the music in that folder</p>
+                  </div>
+                </label>
+                            <input type="button" id="button-input" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Playlist -->
+        <div class="nav-content playlist" id="songs">
+            <table class="table">
+                <colgroup>
+                    <col width="3%" />
+                    <col width="36%" />
+                    <col width="50%" />
+                    <col width="5%" />
+                    <col width="3%" />
+                    <col width="3%" />
+                </colgroup>
+                <thead>
+                    <tr class="tr tr-title">
+                        <th class="th hashtag">
+                            <i class="fa-solid fa-hashtag"></i>
+                        </th>
+                        <th class="th">TITLE</th>
+                        <th class="th">ARTIST</th>
+                        <th class="th duration">
+                            <i class="fa-regular fa-clock"></i>
+                        </th>
+                        <th class="th"></th>
+                        <th class="th"></th>
+                    </tr>
+                </thead>
+                <tbody class="body-table">
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">The Power</td>
+                        <td class="td td-artist">Hugo Cottu, Loria Boban</td>
+                        <td class="td td-time">03:51</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Can't Complain</td>
+                        <td class="td td-artist">Dog Ear</td>
+                        <td class="td td-time">04:21</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Better</td>
+                        <td class="td td-artist">corto.alto, kitti</td>
+                        <td class="td td-time">03:56</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Man up And Create</td>
+                        <td class="td td-artist">Melle Jutte</td>
+                        <td class="td td-time">02:15</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr nowplay">
+                        <td class="td td-volume">
+                            <!-- <i class="fa-solid fa-volume-up"></i> -->
+                            <div class="equaliser">
+                                <span class="line n1"></span>
+                                <span class="line n2"></span>
+                                <span class="line n3"></span>
+                                <span class="line n4"></span>
+                            </div>
+                        </td>
+                        <td class="td td-title">Morning Sun</td>
+                        <td class="td td-artist">Emile Almira, Lizzie Statham</td>
+                        <td class="td td-time">03:45</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="nav-content playlist" id="your-libary">
+            <table class="table">
+                <colgroup>
+                    <col width="3%" />
+                    <col width="36%" />
+                    <col width="50%" />
+                    <col width="5%" />
+                    <col width="3%" />
+                    <col width="3%" />
+                </colgroup>
+                <thead>
+                    <tr class="tr tr-title">
+                        <th class="th hashtag">
+                            <i class="fa-solid fa-hashtag"></i>
+                        </th>
+                        <th class="th">TITLE</th>
+                        <th class="th">ARTIST</th>
+                        <th class="th duration">
+                            <i class="fa-regular fa-clock"></i>
+                        </th>
+                        <th class="th"></th>
+                        <th class="th"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">The Power</td>
+                        <td class="td td-artist">Hugo Cottu, Loria Boban</td>
+                        <td class="td td-time">03:51</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Can't Complain</td>
+                        <td class="td td-artist">Dog Ear</td>
+                        <td class="td td-time">04:21</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Better</td>
+                        <td class="td td-artist">corto.alto, kitti</td>
+                        <td class="td td-time">03:56</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Man up And Create</td>
+                        <td class="td td-artist">Melle Jutte</td>
+                        <td class="td td-time">02:15</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr nowplay">
+                        <td class="td td-play">
+                            <!-- <div class="equaliser">
+                  <span class="line n1"></span>
+                  <span class="line n2"></span>
+                  <span class="line n3"></span>
+                  <span class="line n4"></span>
+                </div> -->
+                        </td>
+                        <td class="td td-title">Morning Sun</td>
+                        <td class="td td-artist">Emile Almira, Lizzie Statham</td>
+                        <td class="td td-time">03:45</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td td-play"></td>
+                        <td class="td td-title">Belladonna</td>
+                        <td class="td td-artist">Armando Young</td>
+                        <td class="td td-time">03:12</td>
+                        <td class="td td-like"></td>
+                        <td class="td td-remove"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Playbar -->
+        <div class="playbar">
+            <!-- Song detail -->
+            <div class="song">
+                <div class="song-img"></div>
+                <div class="song-text-box">
+                    <div class="song-wrap">
+                        <p class="song-title" id="song-title"></p>
+                    </div>
+                    <div>
+                        <p class="song-artist" id="song-artist"></p>
+                    </div>
+                </div>
+                <div class="song-icon-box button-choice like">
+                    <div class="tooltip">
+                        <i class="song-icon fa-regular fa-heart button-icon button-not"></i>
+                        <p class="tooltiptext">Save to Your Library</p>
+                    </div>
+                    <div class="tooltip">
+                        <i class="song-icon fa-solid fa-heart button-icon button-enable"></i>
+                        <p class="tooltiptext">Remove from Your Library</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Control -->
+            <div class="control">
+                <ul class="control-wrap control-icon-box">
+                    <li class="control-list button-choice shuffle">
+                        <div class="tooltip">
+                            <i class="control-icon fa-solid fa-shuffle button-icon button-not"></i>
+                            <p class="tooltiptext">Enable shuffle</p>
+                        </div>
+                        <div class="tooltip">
+                            <i class="control-icon fa-solid fa-shuffle button-icon button-enable"></i>
+                            <p class="tooltiptext">Disable shuffle</p>
+                        </div>
+                    </li>
+                    <li class="control-list tooltip" onclick="prev()">
+                        <i class="control-icon fa-solid fa-backward-step tooltip"></i>
+                        <p class="tooltiptext">Previous</p>
+                    </li>
+                    <li class="control-list button-choice play" onclick="pause()" id="pause">
+                        <div class="tooltip">
+                            <i class="control-icon fa-solid fa-circle-play button-icon button-not"></i>
+                            <p class="tooltiptext">Play</p>
+                        </div>
+                        <div class="tooltip">
+                            <i class="control-icon fa-solid fa-circle-pause button-icon button-enable"></i>
+                            <p class="tooltiptext">Pause</p>
+                        </div>
+                    </li>
+
+                    <li class="control-list tooltip" onclick="next()">
+                        <i class="control-icon fa-solid fa-forward-step"></i>
+                        <p class="tooltiptext">Next</p>
+                    </li>
+                    <li class="control-list button-choice repeat">
+                        <div class="tooltip">
+                            <i class="control-icon ph-repeat-bold repeat button-icon button-not"></i>
+                            <p class="tooltiptext">Enable repeat</p>
+                        </div>
+                        <div class="tooltip">
+                            <i class="control-icon ph-repeat-once-bold repeat button-icon button-enable"></i>
+                            <p class="tooltiptext">Disable repeat</p>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="control-wrap control-range-bar">
+                    <li class="time" id="current-time">
+                        <div id='rangeValue'>00:00</div>
+                    </li>
+                    <li class="control-bar">
+                        <input type="range" value="0" min="0" max="100" step="1" id="range" />
+                    </li>
+                    <li class="time" id="end-time">
+                        <p>xx:xx</p>
+                    </li>
+                </ul>
+            </div>
+            <!-- Volume -->
+            <div class="volume">
+                <div class="volume-icon button-choice" id="volumeBtn">
+                    <div class="tooltip">
+                        <i class="fa-solid fa-volume-up button-icon button-not"></i>
+                        <p class="tooltiptext">Mute</p>
+                    </div>
+                    <div class="tooltip">
+                        <i class="fa-solid fa-volume-mute button-icon button-enable"></i>
+                        <p class="tooltiptext">Unmute</p>
+                    </div>
+                </div>
+                <div class="volume-bar">
+                    <input id="volume-bar" type="range" value="100" min="0" max="100" step="1" />
+                </div>
+            </div>
+        </div>
+        <script src="./renderer.js"></script>
+        <script src="./renderer2.js"></script>
+    </div>
+</body>
+
+</html>

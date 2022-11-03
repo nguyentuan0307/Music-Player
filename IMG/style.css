@@ -1,0 +1,17 @@
+.level {
+    height: 500px;
+    width: 300px;
+    background: red;
+    animation: charge 100s linear
+}
+
+@keyframes charge {
+    0% {
+        width: 0;
+        background: orange;
+    }
+    100% {
+        width: 100%;
+        background: green;
+    }
+}

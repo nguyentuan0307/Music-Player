@@ -1,0 +1,26 @@
+{
+  "name": "married-psychology-see-6u21o",
+  "productName": "married-psychology-see-6u21o",
+  "description": "My Electron application description",
+  "keywords": [],
+  "main": "main.js",
+  "version": "1.0.0",
+  "author": "tuna",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "child_process": "^1.0.2",
+    "docxtemplater": "^3.31.6",
+    "electron-prebuilt": "^1.4.13",
+    "express": "^4.18.2",
+    "jquery": "^3.6.1",
+    "jsmediatags": "^3.9.7",
+    "mplayer": "^2.1.0",
+    "pizzip": "^3.1.3"
+  },
+  "devDependencies": {
+    "electron": "^20.1.4"
+  }
+}
