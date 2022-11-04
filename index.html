@@ -385,7 +385,7 @@
             <!-- Control -->
             <div class="control">
                 <ul class="control-wrap control-icon-box">
-                    <li class="control-list button-choice shuffle">
+                    <li class="control-list button-choice shuffle" id="random">
                         <div class="tooltip">
                             <i class="control-icon fa-solid fa-shuffle button-icon button-not"></i>
                             <p class="tooltiptext">Enable shuffle</p>
@@ -414,7 +414,7 @@
                         <i class="control-icon fa-solid fa-forward-step"></i>
                         <p class="tooltiptext">Next</p>
                     </li>
-                    <li class="control-list button-choice repeat">
+                    <li class="control-list button-choice repeat" id="repeat">
                         <div class="tooltip">
                             <i class="control-icon ph-repeat-bold repeat button-icon button-not"></i>
                             <p class="tooltiptext">Enable repeat</p>
@@ -427,13 +427,13 @@
                 </ul>
                 <ul class="control-wrap control-range-bar">
                     <li class="time" id="current-time">
-                        <div id='rangeValue'>00:00</div>
+                        <div id='rangeValue'></div>
                     </li>
                     <li class="control-bar">
                         <input type="range" value="0" min="0" max="100" step="1" id="range" />
                     </li>
                     <li class="time" id="end-time">
-                        <p>xx:xx</p>
+                        <p></p>
                     </li>
                 </ul>
             </div>

@@ -11,6 +11,8 @@ let songTitle = document.getElementById('song-title')
 let songArtist = document.getElementById('song-artist')
 let endTime = document.getElementById('end-time')
 let pausebtn = document.getElementById('pause')
+let randomBtn = document.getElementById('random')
+let repeatBtn = document.getElementById('repeat')
 
 /** Bien */
 let play
@@ -24,6 +26,8 @@ let isStart = false
 let seconds = 0
 let minutes = 0
 let isRepeat = false
+let isRandom = false
+let prevRow = undefined
 
 /** Chon folder chua nhac */
 fileInput.onclick = async() => {
@@ -102,10 +106,13 @@ function convertToTime(x) {
 
 /** Chon bai nhac */
 function SelectedRow(currentRow) {
+    if (prevRow) prevRow.classList.remove('nowplay')
+    currentRow.classList.add('nowplay')
     indexPre = indexCur
-    indexCur = parseInt(currentRow.cells[5].textContent)
+    indexCur = Math.floor(currentRow.cells[5].textContent)
     loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[3].textContent)
     playSong()
+    prevRow = currentRow
 }
 
 /** Hien thi nhac hien tai */
@@ -157,16 +164,23 @@ function prev() {
 }
 
 /** random song */
+randomBtn.onclick = () => {
+    if (isRandom == true) { isRandom = false } else { isRandom = true }
+}
+
 function random() {
     indexPre = indexCur
-    indexCur = Math.floor(Math.random() * listMusic.length);
+    while (indexCur == indexPre) {
+        indexCur = Math.floor(Math.random() * listMusic.length);
+    }
     loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration))
     playSong()
 }
 
 /** Repeat song */
-
-
+repeatBtn.onclick = () => {
+    if (isRepeat == true) { isRepeat = false } else { isRepeat = true }
+}
 
 /** replay song */
 let timeinterval
@@ -174,9 +188,10 @@ let timeinterval
 function replay() {
     stop()
     play = exec("mplayer -slave -quiet -volume " + volumeBar.value + ' ' + listMusic[indexCur].path)
-    play.stdout.on('data', (data) => {
-        console.log(data);
-    })
+    if (prevRow) prevRow.classList.remove('nowplay')
+    let curRow = load.getElementsByTagName('tr')[indexCur]
+    curRow.classList.add('nowplay')
+    prevRow = curRow
     isPlay = true
     rangeValue.innerHTML = '0:00'
     seconds = 0
@@ -202,7 +217,7 @@ function updateClock() {
     rangeValue.innerHTML = `${minutes}:${seconds>9?seconds:'0'+seconds}`
     if (range.value == 100) {
         clearInterval(timeinterval);
-        next()
+        if (isRepeat == true) { replay() } else if (isRandom == true) { random() } else { next() }
     }
 }
 
@@ -223,6 +238,8 @@ volumeBar.oninput = () => {
     if (play != null) {
         play.stdin.write('volume ' + volumeBar.value + ' 1\n')
     }
+    if (volumeBar.value == 0) volumeBtn.classList.add('is-choice')
+    else volumeBtn.classList.remove('is-choice')
 }
 let volumeBtn = document.getElementById('volumeBtn')
 volumeBtn.onclick = () => {
