@@ -18,7 +18,7 @@
 </head>
 
 <body>
-	<div class="container" onclick="start()">
+	<div class="container">
 		<!-- Header -->
 		<div class="header">
 			<div class="logo">
@@ -47,7 +47,7 @@
 						<i class="open-icon fa-regular fa-folder-open"></i>
 						Open file(s)
 					</label>
-					<input type="file" id="file-input" />
+					<input type="button" id="file-input" />
 				</div>
 				<div class="dropdown">
 					<button class="dropdown-button" onclick="myFunction()">
@@ -62,17 +62,17 @@
 									<p>Browse for file to play</p>
 								</div>
 							</label>
-							<input type="file" id="file-input" />
+							<input type="button" id="file-input" />
 						</div>
 						<div class="open-button">
-							<label class="open-label" for="button-input">
+							<label class="open-label" for="folder-input">
 								<i class="open-icon fa-solid fa-folder-plus"></i>
 								<div class="open-text">
 									<h3>Open forder</h3>
 									<p>Choose a folder and play all the music in that folder</p>
 								</div>
 							</label>
-							<input type="button" id="button-input" />
+							<input type="button" id="folder-input" />
 						</div>
 					</div>
 				</div>
@@ -104,150 +104,6 @@
 					</tr>
 				</thead>
 				<tbody class="body-table">
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">The Power</td>
-						<td class="td td-artist">Hugo Cottu, Loria Boban</td>
-						<td class="td td-time">03:51</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Can't Complain</td>
-						<td class="td td-artist">Dog Ear</td>
-						<td class="td td-time">04:21</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Better</td>
-						<td class="td td-artist">corto.alto, kitti</td>
-						<td class="td td-time">03:56</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Man up And Create</td>
-						<td class="td td-artist">Melle Jutte</td>
-						<td class="td td-time">02:15</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr nowplay">
-						<td class="td td-volume">
-							<!-- <i class="fa-solid fa-volume-up"></i> -->
-							<div class="equaliser">
-								<span class="line n1"></span>
-								<span class="line n2"></span>
-								<span class="line n3"></span>
-								<span class="line n4"></span>
-							</div>
-						</td>
-						<td class="td td-title">Morning Sun</td>
-						<td class="td td-artist">Emile Almira, Lizzie Statham</td>
-						<td class="td td-time">03:45</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
-					<tr class="tr">
-						<td class="td td-play"></td>
-						<td class="td td-title">Belladonna</td>
-						<td class="td td-artist">Armando Young</td>
-						<td class="td td-time">03:12</td>
-						<td class="td td-like"></td>
-						<td class="td td-remove"></td>
-					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -355,7 +211,7 @@
 						<p class="song-artist" id="song-artist"></p>
 					</div>
 				</div>
-				<div class="song-icon-box button-choice like">
+				<div class="song-icon-box button-choice like" id="favorite">
 					<div class="tooltip">
 						<i class="song-icon fa-regular fa-heart button-icon button-not"></i>
 						<p class="tooltiptext">Save to Your Library</p>

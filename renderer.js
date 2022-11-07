@@ -4,6 +4,7 @@ let { exec } = require("child_process")
 let dialog = remote.dialog
 let mainWindow = remote.getCurrentWindow()
 let fileInput = document.getElementById('file-input')
+let folderInput = document.getElementById('folder-input')
 let load = document.getElementsByClassName('body-table')[0]
 let rangeValue = document.getElementById('rangeValue')
 let range = document.getElementById('range')
@@ -13,6 +14,7 @@ let endTime = document.getElementById('end-time')
 let pausebtn = document.getElementById('pause')
 let randomBtn = document.getElementById('random')
 let repeatBtn = document.getElementById('repeat')
+let likeBtn = document.getElementById('favorite')
 
 /** Bien */
 let play
@@ -21,16 +23,52 @@ let indexCur
 let indexPre
 let listMusic = []
 let folder
+let isAddFile = false
 let isOpenFolder = false
-let isStart = false
 let seconds = 0
 let minutes = 0
 let isRepeat = false
 let isRandom = false
 let prevRow = undefined
+let timeTmp
+let loaded
+
+/** Menu Chon Nhac */
+function myFunction() {
+	document.getElementById("myDropdown").classList.toggle("show");
+}
+
+/** Them file nhac */
+fileInput.onclick = async () => {
+	let files = await dialog.showOpenDialog(mainWindow, {
+		properties: ['openFile', 'multiSelections'],
+		filters: [
+			{
+				name: 'music files',
+				extensions: ['mp3', 'wav']
+			}
+		]
+	})
+	if (files != undefined) {
+		isAddFile = true
+		files.forEach(file => {
+			const ls = exec('exiftool -s -s -s -Title -Artist -Duration -n ' + file)
+			ls.stdout.on('data', (data) => {
+				let a = data.split("\n")
+				listMusic.push({
+					title: a[0],
+					path: file,
+					artist: a[1],
+					duration: Math.floor(a[2]),
+				})
+			})
+		})
+		timeTmp = setInterval(loadListSong, 1000)
+	}
+}
 
 /** Chon folder chua nhac */
-fileInput.onclick = async () => {
+folderInput.onclick = async () => {
 	folder = await dialog.showOpenDialog(mainWindow, {
 		properties: ['openDirectory'],
 	})
@@ -39,7 +77,7 @@ fileInput.onclick = async () => {
 		isOpenFolder = true
 		fs.readdir(folder[0], (err, files) => {
 			listMusic = []
-			isStart = false
+			isAddFile = false
 			stop()
 			files.forEach(file => {
 				if (file.substring(file.length, file.length - 3) == 'mp3') {
@@ -57,42 +95,35 @@ fileInput.onclick = async () => {
 			})
 		})
 	}
-}
-
-/** Bat dau chuong trinh */
-function start() {
-	if (isStart) { } else {
-		while (listMusic.length != 0) {
-			loadListSong()
-			isStart = true
-			break
-		}
-	}
+	timeTmp = setInterval(loadListSong, 1000)
 }
 
 /** Hien thi nhac ra table */
 function loadListSong() {
-	if (isOpenFolder) {
-		isOpenFolder = false
+	if (isOpenFolder || isAddFile) {
 		load.innerHTML = ''
+		isOpenFolder = false
 		indexCur = -1
 		indexPre = -1
 		listMusic.sort((a, b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0))
-		for (let i = 0; i < listMusic.length; i++) {
+		alikeSong()
+		for (let index = 0; index < listMusic.length; index++) {
 			let x = `
     <tr class="tr" ondblclick='SelectedRow(this)'>
                         <td class="td td-play"><div class="tooltip"> <i class="fa-solid fa-play"></i> <p class="tooltiptext">Play</p> </div></td>
-                        <td class="td td-title">${listMusic[i].title}</td>
-                        <td class="td td-artist">${listMusic[i].artist}</td>
-                        <td class="td td-time">${convertToTime(listMusic[i].duration)}</td>
-                        <td style="display:none">${listMusic[i].path}</td>
-                        <td style="display:none">${i}</td>
+                        <td class="td td-title">${listMusic[index].title}</td>
+                        <td class="td td-artist">${listMusic[index].artist}</td>
+                        <td class="td td-time">${convertToTime(listMusic[index].duration)}</td>
+                        <td style="display:none">${listMusic[index].path}</td>
+                        <td style="display:none">${index}</td>
                         <td class="td td-like button-choice"><div class="tooltip"> <i class="fa-regular fa-heart button-icon button-not"></i> <p class="tooltiptext">Save to Your Library</p> </div> <div class="tooltip"> <i class="fa-solid fa-heart button-icon button-enable"></i> <p class="tooltiptext">Remove from Your Library</p> </div></td>
                         <td class="td td-remove"><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                     </tr>
     `
 			load.insertAdjacentHTML('beforeend', x)
 		}
+		loaded = true
+		if (loaded) clearInterval(timeTmp)
 	}
 }
 
@@ -165,6 +196,7 @@ function prev() {
 /** random song */
 randomBtn.onclick = () => {
 	if (isRandom == true) { isRandom = false } else { isRandom = true }
+	randomBtn.classList.toggle("is-choice")
 }
 
 function random() {
@@ -179,6 +211,12 @@ function random() {
 /** Repeat song */
 repeatBtn.onclick = () => {
 	if (isRepeat == true) { isRepeat = false } else { isRepeat = true }
+	repeatBtn.classList.toggle("is-choice")
+}
+
+/** Like Song */
+likeBtn.onclick = () => {
+	likeBtn.classList.toggle("is-choice")
 }
 
 /** replay song */
@@ -206,17 +244,22 @@ function stop() {
 
 /** CountUp time */
 function updateClock() {
-	seconds++
-	if (seconds == 60) {
-		minutes++
-		seconds = 0
-	}
-	const currentRange = Math.floor((seconds + minutes * 60) / listMusic[indexCur].duration * 100)
-	range.value = currentRange
-	rangeValue.innerHTML = `${minutes}:${seconds > 9 ? seconds : '0' + seconds}`
-	if (range.value == 100) {
+	if (isOpenFolder) {
 		clearInterval(timeinterval)
-		if (isRepeat == true) { replay() } else if (isRandom == true) { random() } else { next() }
+	} else {
+		seconds++
+		if (seconds == 60) {
+			minutes++
+			seconds = 0
+		}
+		const currentRange = Math.floor((seconds + minutes * 60) / listMusic[indexCur].duration * 100)
+		range.value = currentRange
+		rangeValue.innerHTML = `${minutes}:${seconds > 9 ? seconds : '0' + seconds}`
+		range.style.backgroundSize = currentRange + "% 100%"
+		if (range.value == 100) {
+			clearInterval(timeinterval)
+			if (isRepeat == true) { replay() } else if (isRandom == true) { random() } else { next() }
+		}
 	}
 }
 
@@ -244,5 +287,15 @@ let volumeBtn = document.getElementById('volumeBtn')
 volumeBtn.onclick = () => {
 	if (play != null) {
 		play.stdin.write('mute\n')
+	}
+}
+
+/** Xu ly trung bai */
+function alikeSong() {
+	for (let tmp = 0; tmp < listMusic.length - 1; tmp++) {
+		while (listMusic[tmp].title == listMusic[tmp + 1].title && listMusic[tmp].artist == listMusic[tmp + 1].artist && listMusic[tmp].duration == listMusic[tmp + 1].duration) {
+			listMusic.splice(tmp, 1)
+			if (tmp == listMusic.length - 1) return
+		}
 	}
 }
