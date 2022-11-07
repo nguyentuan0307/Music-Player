@@ -132,7 +132,6 @@ function loadListSong() {
                         <td class="td td-artist">${listMusic[index].artist}</td>
                         <td class="td td-time">${convertToTime(listMusic[index].duration)}</td>
                         <td style="display:none">${listMusic[index].path}</td>
-                        <td style="display:none">${index}</td>
                         <td class="td td-like button-choice" onclick='favoriteChange(this)'><div class="tooltip"> <i class="fa-regular fa-heart button-icon button-not"></i> <p class="tooltiptext">Save to Your Library</p> </div> <div class="tooltip"> <i class="fa-solid fa-heart button-icon button-enable"></i> <p class="tooltiptext">Remove from Your Library</p> </div></td>
                         <td class="td td-remove" onclick='removeSong(this)'><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                     </tr>
@@ -163,7 +162,7 @@ function SelectedRow(currentRow) {
 							</div>
 	`
 	indexPre = indexCur
-	indexCur = Math.floor(currentRow.cells[5].textContent)
+	indexCur = currentRow.rowIndex - 1
 	loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[3].textContent)
 	playSong()
 	prevRow = currentRow
@@ -388,8 +387,8 @@ function removeSong(currentRow) {
 	}
 	dialog.showMessageBox(null, options, (response) => {
 		if (response) {
-			console.log(tr.cells[5].textContent)
-			removeByIndex(Math.floor(tr.cells[5].textContent))
+			removeByIndex(Math.floor(tr.rowIndex - 1))
+			if ((tr.rowIndex - 1) == indexCur) random()
 			tr.parentNode.removeChild(tr)
 		}
 	})
