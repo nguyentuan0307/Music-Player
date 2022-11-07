@@ -23,19 +23,32 @@ let indexCur
 let indexPre
 let listMusic = []
 let folder
-let isAddFile = false
 let isOpenFolder = false
 let seconds = 0
 let minutes = 0
-let isRepeat = false
-let isRandom = false
 let prevRow = undefined
 let timeTmp
 let loaded
+let isListSong = false
 
 /** Menu Chon Nhac */
 function myFunction() {
 	document.getElementById("myDropdown").classList.toggle("show");
+}
+
+/** List Nhac */
+function openListSong(evt, listName) {
+	var i, navcontent, navlink;
+	navcontent = document.getElementsByClassName("nav-content");
+	for (i = 0; i < navcontent.length; i++) {
+		navcontent[i].style.display = "none";
+	}
+	navlink = document.getElementsByClassName("nav-link");
+	for (i = 0; i < navlink.length; i++) {
+		navlink[i].className = navlink[i].className.replace(" active", "");
+	}
+	document.getElementById(listName).style.display = "block";
+	evt.currentTarget.className += " active";
 }
 
 /** Them file nhac */
@@ -50,7 +63,6 @@ fileInput.onclick = async () => {
 		]
 	})
 	if (files != undefined) {
-		isAddFile = true
 		files.forEach(file => {
 			const ls = exec('exiftool -s -s -s -Title -Artist -Duration -n ' + file)
 			ls.stdout.on('data', (data) => {
@@ -60,6 +72,9 @@ fileInput.onclick = async () => {
 					path: file,
 					artist: a[1],
 					duration: Math.floor(a[2]),
+					getInfo: function () {
+						return this.title + '<|>' + this.artist + '<|>' + this.duration + '<|>' + this.path
+					}
 				})
 			})
 		})
@@ -77,7 +92,6 @@ folderInput.onclick = async () => {
 		isOpenFolder = true
 		fs.readdir(folder[0], (err, files) => {
 			listMusic = []
-			isAddFile = false
 			stop()
 			files.forEach(file => {
 				if (file.substring(file.length, file.length - 3) == 'mp3') {
@@ -89,6 +103,9 @@ folderInput.onclick = async () => {
 							path: folder[0] + '/' + file,
 							artist: a[1],
 							duration: Math.floor(a[2]),
+							getInfo: function () {
+								return this.title + '<|>' + this.artist + '<|>' + this.duration + '<|>' + this.path
+							}
 						})
 					})
 				}
@@ -100,31 +117,30 @@ folderInput.onclick = async () => {
 
 /** Hien thi nhac ra table */
 function loadListSong() {
-	if (isOpenFolder || isAddFile) {
-		load.innerHTML = ''
-		isOpenFolder = false
-		indexCur = -1
-		indexPre = -1
-		listMusic.sort((a, b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0))
-		alikeSong()
-		for (let index = 0; index < listMusic.length; index++) {
-			let x = `
+	isListSong = true
+	load.innerHTML = ''
+	isOpenFolder = false
+	indexCur = -1
+	indexPre = -1
+	listMusic.sort((a, b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0))
+	alikeSong()
+	for (let index = 0; index < listMusic.length; index++) {
+		let x = `
     <tr class="tr" ondblclick='SelectedRow(this)'>
-                        <td class="td td-play"><div class="tooltip"> <i class="fa-solid fa-play"></i> <p class="tooltiptext">Play</p> </div></td>
+                        <td class="td td-play"><div class="tooltip"> <i class="fa-solid fa-play" ></i> <p class="tooltiptext">Play</p> </div></td>
                         <td class="td td-title">${listMusic[index].title}</td>
                         <td class="td td-artist">${listMusic[index].artist}</td>
                         <td class="td td-time">${convertToTime(listMusic[index].duration)}</td>
                         <td style="display:none">${listMusic[index].path}</td>
                         <td style="display:none">${index}</td>
-                        <td class="td td-like button-choice"><div class="tooltip"> <i class="fa-regular fa-heart button-icon button-not"></i> <p class="tooltiptext">Save to Your Library</p> </div> <div class="tooltip"> <i class="fa-solid fa-heart button-icon button-enable"></i> <p class="tooltiptext">Remove from Your Library</p> </div></td>
-                        <td class="td td-remove"><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
+                        <td class="td td-like button-choice" onclick='favoriteChange(this)'><div class="tooltip"> <i class="fa-regular fa-heart button-icon button-not"></i> <p class="tooltiptext">Save to Your Library</p> </div> <div class="tooltip"> <i class="fa-solid fa-heart button-icon button-enable"></i> <p class="tooltiptext">Remove from Your Library</p> </div></td>
+                        <td class="td td-remove" onclick='removeSong(this)'><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                     </tr>
     `
-			load.insertAdjacentHTML('beforeend', x)
-		}
-		loaded = true
-		if (loaded) clearInterval(timeTmp)
+		load.insertAdjacentHTML('beforeend', x)
 	}
+	loaded = true
+	if (loaded) clearInterval(timeTmp)
 }
 
 /** Ham ho tro */
@@ -138,6 +154,14 @@ function convertToTime(x) {
 function SelectedRow(currentRow) {
 	if (prevRow) prevRow.classList.remove('nowplay')
 	currentRow.classList.add('nowplay')
+	currentRow.cells[0].innerHTML = `
+	<div class="equaliser">
+								<span class="line n1"></span>
+								<span class="line n2"></span>
+								<span class="line n3"></span>
+								<span class="line n4"></span>
+							</div>
+	`
 	indexPre = indexCur
 	indexCur = Math.floor(currentRow.cells[5].textContent)
 	loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[3].textContent)
@@ -162,40 +186,48 @@ function playSong() {
 
 /** Pause */
 function pause() {
-	if (isPlay) {
-		play.stdin.write('p\n')
-		isPlay = false
+	if (!isListSong) return
+	else {
+		if (isPlay) {
+			play.stdin.write('p\n')
+			isPlay = false
+		}
+		isPlay = true
 	}
-	isPlay = true
 }
 
 /** Next song */
 function next() {
-	indexPre = indexCur
-	if (indexCur == listMusic.length - 1) {
-		indexCur = 0
-	} else {
-		indexCur++
+	if (!isListSong) return
+	else {
+		indexPre = indexCur
+		if (indexCur == listMusic.length - 1) {
+			indexCur = 0
+		} else {
+			indexCur++
+		}
+		loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration))
+		playSong()
 	}
-	loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration))
-	playSong()
 }
 
 /** previous song */
 function prev() {
-	indexPre = indexCur
-	if (indexCur == 0) {
-		indexCur = listMusic.length - 1
-	} else {
-		indexCur--
+	if (!isListSong) return
+	else {
+		indexPre = indexCur
+		if (indexCur == 0) {
+			indexCur = listMusic.length - 1
+		} else {
+			indexCur--
+		}
+		loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration))
+		playSong()
 	}
-	loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration))
-	playSong()
 }
 
 /** random song */
 randomBtn.onclick = () => {
-	if (isRandom == true) { isRandom = false } else { isRandom = true }
 	randomBtn.classList.toggle("is-choice")
 }
 
@@ -210,7 +242,6 @@ function random() {
 
 /** Repeat song */
 repeatBtn.onclick = () => {
-	if (isRepeat == true) { isRepeat = false } else { isRepeat = true }
 	repeatBtn.classList.toggle("is-choice")
 }
 
@@ -258,7 +289,8 @@ function updateClock() {
 		range.style.backgroundSize = currentRange + "% 100%"
 		if (range.value == 100) {
 			clearInterval(timeinterval)
-			if (isRepeat == true) { replay() } else if (isRandom == true) { random() } else { next() }
+			if (repeatBtn.classList.contains('is-choice')) { replay() }
+			else if (randomBtn.classList.contains('is-choice')) { random() } else { next() }
 		}
 	}
 }
@@ -276,6 +308,7 @@ range.onclick = () => {
 
 /** Change Volume */
 let volumeBar = document.getElementById('volume-bar')
+let volumeBtn = document.getElementById('volumeBtn')
 volumeBar.oninput = () => {
 	if (play != null) {
 		play.stdin.write('volume ' + volumeBar.value + ' 1\n')
@@ -283,9 +316,9 @@ volumeBar.oninput = () => {
 	if (volumeBar.value == 0) volumeBtn.classList.add('is-choice')
 	else volumeBtn.classList.remove('is-choice')
 }
-let volumeBtn = document.getElementById('volumeBtn')
 volumeBtn.onclick = () => {
 	if (play != null) {
+		volumeBtn.classList.toggle('is-choice')
 		play.stdin.write('mute\n')
 	}
 }
@@ -298,4 +331,71 @@ function alikeSong() {
 			if (tmp == listMusic.length - 1) return
 		}
 	}
+}
+
+/** Test file*/
+
+window.addEventListener('beforeunload', function e() {
+	let content = ''
+	for (let i = 0; i < listMusic.length; i++) {
+		content += listMusic[i].getInfo() + '\n'
+	}
+	fs.writeFile('input.txt', content, err => {
+		if (err) {
+			console.error(err);
+		}
+	});
+})
+
+function loadWindow() {
+	try {
+		const data = fs.readFileSync('input.txt', 'utf8');
+		let arr = data.split('\n')
+		for (let i = 0; i < arr.length - 1; i++) {
+			let a = arr[i].split('<|>')
+			listMusic.push({
+				title: a[0],
+				artist: a[1],
+				duration: Math.floor(a[2]),
+				path: a[3],
+				getInfo: function () {
+					return this.title + '<|>' + this.artist + '<|>' + this.duration + '<|>' + this.path
+				}
+			})
+		}
+		loadListSong()
+	} catch (err) {
+		console.error(err);
+	}
+}
+
+/** Favorite Change */
+function favoriteChange(favorite) {
+	let isFa = favorite.classList.contains('is-choice')
+	if (isFa) favorite.classList.remove('is-choice')
+	else favorite.classList.add('is-choice')
+}
+
+/** Remove Song */
+function removeSong(currentRow) {
+	let tr = currentRow.parentNode
+	const options = {
+		type: 'question',
+		buttons: ['No', 'Yes'],
+		defaultId: 2,
+		message: 'Are you sure you want to delete this song?',
+		detail: tr.cells[1].textContent,
+	}
+	dialog.showMessageBox(null, options, (response) => {
+		if (response) {
+			console.log(tr.cells[5].textContent)
+			removeByIndex(Math.floor(tr.cells[5].textContent))
+			tr.parentNode.removeChild(tr)
+		}
+	})
+}
+function removeByIndex(index) {
+	const a1 = listMusic.slice(0, index);
+	const a2 = listMusic.slice(index + 1, listMusic.length);
+	listMusic = a1.concat(a2)
 }
