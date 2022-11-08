@@ -64,16 +64,17 @@ fileInput.onclick = async () => {
 	})
 	if (files != undefined) {
 		files.forEach(file => {
-			const ls = exec('exiftool -s -s -s -Title -Artist -Duration -n ' + file)
+			const ls = exec('exiftool -s -s -s -Title -Artist -Genre -Duration -n ' + file)
 			ls.stdout.on('data', (data) => {
 				let a = data.split("\n")
 				listMusic.push({
 					title: a[0],
 					path: file,
 					artist: a[1],
-					duration: Math.floor(a[2]),
+					genre: a[2],
+					duration: Math.floor(a[3]),
 					getInfo: function () {
-						return this.title + '<|>' + this.artist + '<|>' + this.duration + '<|>' + this.path
+						return this.title + '<|>' + this.artist + '<|>' + this.genre + '<|>' + this.duration + '<|>' + this.path
 					}
 				})
 			})
@@ -95,16 +96,17 @@ folderInput.onclick = async () => {
 			stop()
 			files.forEach(file => {
 				if (file.substring(file.length, file.length - 3) == 'mp3') {
-					const ls = exec('exiftool -s -s -s -Title -Artist -Duration -n ' + folder[0] + '/' + file)
+					const ls = exec('exiftool -s -s -s -Title -Artist -Genre -Duration -n ' + folder[0] + '/' + file)
 					ls.stdout.on('data', (data) => {
 						let a = data.split("\n")
 						listMusic.push({
 							title: a[0],
 							path: folder[0] + '/' + file,
 							artist: a[1],
-							duration: Math.floor(a[2]),
+							genre: a[2],
+							duration: Math.floor(a[3]),
 							getInfo: function () {
-								return this.title + '<|>' + this.artist + '<|>' + this.duration + '<|>' + this.path
+								return this.title + '<|>' + this.artist + '<|>' + this.genre + '<|>' + this.duration + '<|>' + this.path
 							}
 						})
 					})
@@ -130,6 +132,7 @@ function loadListSong() {
                         <td class="td td-play"><div class="tooltip"> <i class="fa-solid fa-play" ></i> <p class="tooltiptext">Play</p> </div></td>
                         <td class="td td-title">${listMusic[index].title}</td>
                         <td class="td td-artist">${listMusic[index].artist}</td>
+												<td class="td td-genre">${listMusic[index].genre}</td>
                         <td class="td td-time">${convertToTime(listMusic[index].duration)}</td>
                         <td style="display:none">${listMusic[index].path}</td>
                         <td class="td td-like button-choice" onclick='favoriteChange(this)'><div class="tooltip"> <i class="fa-regular fa-heart button-icon button-not"></i> <p class="tooltiptext">Save to Your Library</p> </div> <div class="tooltip"> <i class="fa-solid fa-heart button-icon button-enable"></i> <p class="tooltiptext">Remove from Your Library</p> </div></td>
@@ -163,7 +166,7 @@ function SelectedRow(currentRow) {
 	`
 	indexPre = indexCur
 	indexCur = currentRow.rowIndex - 1
-	loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[3].textContent)
+	loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[4].textContent)
 	playSong()
 	prevRow = currentRow
 }
@@ -173,6 +176,7 @@ function loadSong(title, artist, time) {
 	songTitle.innerHTML = title
 	songArtist.innerHTML = artist
 	endTime.innerHTML = time
+
 }
 
 /** Phat nhac */
@@ -225,7 +229,7 @@ function prev() {
 	}
 }
 
-/** random song */
+/** Random song */
 randomBtn.onclick = () => {
 	randomBtn.classList.toggle("is-choice")
 }
@@ -249,7 +253,7 @@ likeBtn.onclick = () => {
 	likeBtn.classList.toggle("is-choice")
 }
 
-/** replay song */
+/** Replay song */
 let timeinterval
 
 function replay() {

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>Music Player</title>
-	<link rel="icon" type="image/x-icon" href="favicon-32.png" />
+	<link rel="icon" type="image/x-icon" href="./img/favicon-32.png" />
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
 		rel="stylesheet" />
 	<!-- <link rel="stylesheet" href="./css/all.css" />
@@ -22,7 +22,7 @@
 		<!-- Header -->
 		<div class="header">
 			<div class="logo">
-				<img class="favicon" src="favicon-32.png" alt="" />
+				<img class="favicon" src="./img/favicon-32.png" alt="" />
 				<p class="title">Music Player</p>
 			</div>
 			<div class="nav">
@@ -83,9 +83,10 @@
 			<table class="table">
 				<colgroup>
 					<col width="3%" />
-					<col width="36%" />
-					<col width="50%" />
-					<col width="5%" />
+					<col width="40%" />
+					<col width="26%" />
+					<col width="20%" />
+					<col width="4%" />
 					<col width="3%" />
 					<col width="3%" />
 				</colgroup>
@@ -96,6 +97,7 @@
 						</th>
 						<th class="th">TITLE</th>
 						<th class="th">ARTIST</th>
+						<th class="th">GENRE</th>
 						<th class="th duration">
 							<i class="fa-regular fa-clock"></i>
 						</th>
@@ -103,17 +105,17 @@
 						<th class="th"></th>
 					</tr>
 				</thead>
-				<tbody class="body-table">
-				</tbody>
+				<tbody class="body-table"></tbody>
 			</table>
 		</div>
 		<div class="nav-content playlist" id="your-libary">
 			<table class="table">
 				<colgroup>
 					<col width="3%" />
-					<col width="36%" />
-					<col width="50%" />
-					<col width="5%" />
+					<col width="40%" />
+					<col width="26%" />
+					<col width="20%" />
+					<col width="4%" />
 					<col width="3%" />
 					<col width="3%" />
 				</colgroup>
@@ -124,6 +126,7 @@
 						</th>
 						<th class="th">TITLE</th>
 						<th class="th">ARTIST</th>
+						<th class="th">GENRE</th>
 						<th class="th duration">
 							<i class="fa-regular fa-clock"></i>
 						</th>
@@ -136,6 +139,7 @@
 						<td class="td td-play"></td>
 						<td class="td td-title">The Power</td>
 						<td class="td td-artist">Hugo Cottu, Loria Boban</td>
+						<td class="td td-genre">Nhạc trẻ</td>
 						<td class="td td-time">03:51</td>
 						<td class="td td-like"></td>
 						<td class="td td-remove"></td>
@@ -144,6 +148,7 @@
 						<td class="td td-play"></td>
 						<td class="td td-title">Can't Complain</td>
 						<td class="td td-artist">Dog Ear</td>
+						<td class="td td-genre">Nhạc trẻ</td>
 						<td class="td td-time">04:21</td>
 						<td class="td td-like"></td>
 						<td class="td td-remove"></td>
@@ -152,6 +157,7 @@
 						<td class="td td-play"></td>
 						<td class="td td-title">Better</td>
 						<td class="td td-artist">corto.alto, kitti</td>
+						<td class="td td-genre">Nhạc trẻ</td>
 						<td class="td td-time">03:56</td>
 						<td class="td td-like"></td>
 						<td class="td td-remove"></td>
@@ -160,6 +166,7 @@
 						<td class="td td-play"></td>
 						<td class="td td-title">Man up And Create</td>
 						<td class="td td-artist">Melle Jutte</td>
+						<td class="td td-genre">Nhạc trẻ</td>
 						<td class="td td-time">02:15</td>
 						<td class="td td-like"></td>
 						<td class="td td-remove"></td>
@@ -168,6 +175,7 @@
 						<td class="td td-play"></td>
 						<td class="td td-title">Belladonna</td>
 						<td class="td td-artist">Armando Young</td>
+						<td class="td td-genre">Nhạc trẻ</td>
 						<td class="td td-time">03:12</td>
 						<td class="td td-like"></td>
 						<td class="td td-remove"></td>
@@ -183,6 +191,7 @@
 						</td>
 						<td class="td td-title">Morning Sun</td>
 						<td class="td td-artist">Emile Almira, Lizzie Statham</td>
+						<td class="td td-genre">Rap</td>
 						<td class="td td-time">03:45</td>
 						<td class="td td-like"></td>
 						<td class="td td-remove"></td>
@@ -191,6 +200,7 @@
 						<td class="td td-play"></td>
 						<td class="td td-title">Belladonna</td>
 						<td class="td td-artist">Armando Young</td>
+						<td class="td td-genre">Nhạc trẻ</td>
 						<td class="td td-time">03:12</td>
 						<td class="td td-like"></td>
 						<td class="td td-remove"></td>
@@ -202,7 +212,7 @@
 		<div class="playbar">
 			<!-- Song detail -->
 			<div class="song">
-				<div class="song-img"></div>
+				<div class="song-img"><img id="song-img"></div>
 				<div class="song-text-box">
 					<div class="song-wrap">
 						<p class="song-title" id="song-title"></p>
