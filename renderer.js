@@ -43,14 +43,15 @@ fileInput.onclick = async () => {
 			stop()
 			files.forEach(file => {
 				if (file.substring(file.length, file.length - 3) == 'mp3') {
-					const ls = exec('exiftool -s -s -s -Title -Artist -Duration -n ' + folder[0] + '/' + file)
+					const ls = exec('exiftool -s -s -s -Title -Artist -Genre -Duration -n ' + folder[0] + '/' + file)
 					ls.stdout.on('data', (data) => {
 						let a = data.split("\n")
 						listMusic.push({
 							title: a[0],
 							path: folder[0] + '/' + file,
 							artist: a[1],
-							duration: Math.floor(a[2]),
+							genre: a[2],
+							duration: Math.floor(a[3]),
 						})
 					})
 				}
@@ -79,11 +80,12 @@ function loadListSong() {
 		indexPre = -1
 		listMusic.sort((a, b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0))
 		for (let i = 0; i < listMusic.length; i++) {
-			let x = `
-    <tr class="tr" ondblclick='SelectedRow(this)'>
+			let innerHTML = `
+    								<tr class="tr" ondblclick='SelectedRow(this)'>
                         <td class="td td-play"><div class="tooltip"> <i class="fa-solid fa-play"></i> <p class="tooltiptext">Play</p> </div></td>
                         <td class="td td-title">${listMusic[i].title}</td>
                         <td class="td td-artist">${listMusic[i].artist}</td>
+												<td class="td td-genre">${listMusic[i].genre}</td>
                         <td class="td td-time">${convertToTime(listMusic[i].duration)}</td>
                         <td style="display:none">${listMusic[i].path}</td>
                         <td style="display:none">${i}</td>
@@ -91,7 +93,7 @@ function loadListSong() {
                         <td class="td td-remove"><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                     </tr>
     `
-			load.insertAdjacentHTML('beforeend', x)
+			load.insertAdjacentHTML('beforeend', innerHTML)
 		}
 	}
 }
@@ -108,8 +110,8 @@ function SelectedRow(currentRow) {
 	if (prevRow) prevRow.classList.remove('nowplay')
 	currentRow.classList.add('nowplay')
 	indexPre = indexCur
-	indexCur = Math.floor(currentRow.cells[5].textContent)
-	loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[3].textContent)
+	indexCur = Math.floor(currentRow.cells[6].textContent)
+	loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[4].textContent)
 	playSong()
 	prevRow = currentRow
 }
@@ -119,6 +121,7 @@ function loadSong(title, artist, time) {
 	songTitle.innerHTML = title
 	songArtist.innerHTML = artist
 	endTime.innerHTML = time
+
 }
 
 /** Phat nhac */
@@ -162,7 +165,7 @@ function prev() {
 	playSong()
 }
 
-/** random song */
+/** Random song */
 randomBtn.onclick = () => {
 	if (isRandom == true) { isRandom = false } else { isRandom = true }
 }
@@ -181,7 +184,7 @@ repeatBtn.onclick = () => {
 	if (isRepeat == true) { isRepeat = false } else { isRepeat = true }
 }
 
-/** replay song */
+/** Replay song */
 let timeinterval
 
 function replay() {
@@ -240,6 +243,7 @@ volumeBar.oninput = () => {
 	if (volumeBar.value == 0) volumeBtn.classList.add('is-choice')
 	else volumeBtn.classList.remove('is-choice')
 }
+
 let volumeBtn = document.getElementById('volumeBtn')
 volumeBtn.onclick = () => {
 	if (play != null) {

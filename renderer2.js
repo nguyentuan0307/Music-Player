@@ -6,7 +6,7 @@ function myFunction() {
 }
 
 let button = document.getElementsByClassName("dropdown-button");
-button.onclick = function(event) {
+button.onclick = function (event) {
     if (!event.target.matches(".dropdown-button")) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
@@ -66,7 +66,7 @@ for (let i = 0; i < playList.length; i++) {
 
 const likeList = $$(".td-like");
 for (let i = 0; i < likeList.length; i++) {
-  likeList[i].classList.add("button-choice");
+    likeList[i].classList.add("button-choice");
 }
 
 for (let i = 0; i < likeList.length; i++) {
