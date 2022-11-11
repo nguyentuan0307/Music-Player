@@ -1,20 +1,21 @@
-1. Bản Nhạc Buồn<|>B Ray<|>222<|>/home/tuna/Music/bannhacbuon.mp3
-Bài Này Không Để Đi Diễn<|>Anh Tú Atus<|>178<|>/home/tuna/Music/bainaykhongdedidien.mp3
-Cho Ba<|>B Ray<|>159<|>/home/tuna/Music/choba.mp3
-Chuyện Đôi Ta<|>Emcee L (Da LAB)<|>208<|>/home/tuna/Music/chuyendoita.mp3
-Chạy Ngay Đi (Onionn Remix)<|>Sơn Tùng M-TP, Onionn<|>230<|>/home/tuna/Music/chayngaydi.mp3
-Chờ Đợi Có Đáng Sợ<|>Andiez<|>282<|>/home/tuna/Music/chodoicodangso.mp3
-Do For Love<|>AMee, B Ray<|>189<|>/home/tuna/Music/doforlove.mp3
-Em Là<|>MONO, Onionn<|>197<|>/home/tuna/Music/emla.mp3
-Hãy Trao Cho Anh<|>Sơn Tùng M-TP, Snoop Dogg<|>245<|>/home/tuna/Music/haytraochoanh.mp3
-Làm Vì Yêu 3<|>B Ray<|>181<|>/home/tuna/Music/lamviyeu.mp3
-Lộn Xộn 2<|>Đen<|>217<|>/home/tuna/Music/lonxon2.mp3
-Lời Tạm Biệt Chưa Nói<|>GREY-D (Đoàn Thế Lân), Orange<|>259<|>/home/tuna/Music/loitambietchuanoi.mp3
-Mách Bảo<|>B Ray<|>229<|>/home/tuna/Music/machbao.mp3
-Nắng Ấm Ngang Qua<|>Sơn Tùng M-TP<|>195<|>/home/tuna/Music/nangamngangqua.mp3
-Replay Trên Con Guây<|>Phúc Du, Đan Ni<|>221<|>/home/tuna/Music/relaytrenconguay.mp3
-Trời Hôm Nay Nhiều Mây Cực<|>Đen<|>252<|>/home/tuna/Music/troihomnaynhieumaycuc.mp3
-Vì Anh Đâu Có Biết<|>Madihu, Vũ.<|>241<|>/home/tuna/Music/vianhdaucobiet.mp3
-Waiting For You<|>MONO, Onionn<|>265<|>/home/tuna/Music/waitingforyou.mp3
-Đa Đoan<|>Phan Mạnh Quỳnh<|>200<|>/home/tuna/Music/dadoan.mp3
-Đáp Án Cuối Cùng<|>Quân A.P<|>291<|>/home/tuna/Music/dapancuoicung.mp3
+1. Bản Nhạc Buồn<|>B Ray<|>Rap Việt<|>222<|>/home/nvvuong47/Music/bannhacbuon.mp3
+Bài Này Không Để Đi Diễn<|>Anh Tú Atus<|>Nhạc Trẻ<|>178<|>/home/nvvuong47/Music/bainaykhongdedidien.mp3
+Cho Ba<|>B Ray<|>Rap Việt<|>159<|>/home/nvvuong47/Music/choba.mp3
+Chuyện Đôi Ta<|>Emcee L (Da LAB)<|>Nhạc Trẻ<|>208<|>/home/nvvuong47/Music/chuyendoita.mp3
+Chạy Ngay Đi (Onionn Remix)<|>Sơn Tùng M-TP, Onionn<|>Remix Việt<|>230<|>/home/nvvuong47/Music/chayngaydi.mp3
+Chờ Đợi Có Đáng Sợ<|>Andiez<|>Nhạc Trẻ<|>282<|>/home/nvvuong47/Music/chodoicodangso.mp3
+Do For Love<|>AMee, B Ray<|>Nhạc Trẻ<|>189<|>/home/nvvuong47/Music/doforlove.mp3
+Em Là<|>MONO, Onionn<|>R&B/Hip Hop/Rap<|>197<|>/home/nvvuong47/Music/emla.mp3
+Hãy Trao Cho Anh<|>Sơn Tùng M-TP, Snoop Dogg<|>Nhạc Trẻ<|>245<|>/home/nvvuong47/Music/haytraochoanh.mp3
+Làm Vì Yêu 3<|>B Ray<|>Rap Việt<|>181<|>/home/nvvuong47/Music/lamviyeu.mp3
+Lộn Xộn 2<|>Đen<|>Rap Việt<|>217<|>/home/nvvuong47/Music/lonxon2.mp3
+Lời Tạm Biệt Chưa Nói<|>GREY-D (Đoàn Thế Lân), Orange<|>Nhạc Trẻ<|>259<|>/home/nvvuong47/Music/loitambietchuanoi.mp3
+Mách Bảo<|>B Ray<|>Rap Việt<|>229<|>/home/nvvuong47/Music/machbao.mp3
+Nắng Ấm Ngang Qua<|>Sơn Tùng M-TP<|>Pop<|>195<|>/home/nvvuong47/Music/nangamngangqua.mp3
+Replay Trên Con Guây<|>Phúc Du, Đan Ni<|>Nhạc Trẻ<|>221<|>/home/nvvuong47/Music/relaytrenconguay.mp3
+Trời Hôm Nay Nhiều Mây Cực<|>Đen<|>Rap Việt<|>252<|>/home/nvvuong47/Music/troihomnaynhieumaycuc.mp3
+Vì Anh Đâu Có Biết<|>Madihu, Vũ.<|>R&B/Hip Hop/Rap<|>241<|>/home/nvvuong47/Music/vianhdaucobiet.mp3
+Vệ Tinh<|>HIEUTHUHAI, Hoàng Tôn, Kewtiie<|>Nhạc Trẻ<|>219<|>/home/nvvuong47/Music/vetinh.mp3
+Waiting For You<|>MONO, Onionn<|>R&B/Hip Hop/Rap<|>265<|>/home/nvvuong47/Music/waitingforyou.mp3
+Đa Đoan<|>Phan Mạnh Quỳnh<|>Nhạc Trẻ<|>200<|>/home/nvvuong47/Music/dadoan.mp3
+Đáp Án Cuối Cùng<|>Quân A.P<|>Nhạc Trẻ<|>291<|>/home/nvvuong47/Music/dapancuoicung.mp3

@@ -49,6 +49,7 @@ Medium: 11px
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	user-select: none;
 }
 
 html {
@@ -223,7 +224,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 .search-input {
 	display: block;
 	width: 100%;
-	height: 30.9px;
+	height: 31.83px;
 	line-height: 24px;
 	text-indent: 5px;
 	border-radius: 5px;
@@ -328,7 +329,6 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 	color: white;
 	padding: 8px 10px;
 	font-size: 12px;
-	height: 32.4px;
 	border: 1px solid #4b4c4d;
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
@@ -441,7 +441,6 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 	border-radius: 10px;
 }
 
-.tr:hover td:first-child,
 .tr:hover td:first-child {
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
@@ -469,7 +468,6 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 	border-radius: 10px;
 }
 
-.tr:focus td:first-child,
 .tr:focus td:first-child {
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
@@ -612,9 +610,11 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 	height: fit-content;
 	padding: 20px 18px;
 	background-color: #181818;
-	position: absolute;
+	/* position: absolute;
 	top: 100vh;
-	transform: translateY(-100%);
+	transform: translateY(-100%); */
+	position: fixed;
+	bottom: 0%;
 	justify-content: space-around;
 	z-index: 99;
 }
@@ -627,11 +627,27 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 .song-img {
 	width: 54px;
 	height: 54px;
+
 }
 
 #song-img {
 	width: 54px;
 	height: 54px;
+	border-radius: 50%;
+	animation-name: rotate;
+	animation-duration: 10s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+@keyframes rotate {
+	from {
+		transform: rotate(-360deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .song-text-box {

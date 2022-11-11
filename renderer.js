@@ -1,6 +1,6 @@
 let { remote } = require('electron')
 let fs = require('fs')
-let { exec } = require("child_process")
+let { exec, execSync } = require("child_process")
 let dialog = remote.dialog
 let mainWindow = remote.getCurrentWindow()
 let fileInput = document.getElementById('file-input')
@@ -15,6 +15,7 @@ let pausebtn = document.getElementById('pause')
 let randomBtn = document.getElementById('random')
 let repeatBtn = document.getElementById('repeat')
 let likeBtn = document.getElementById('favorite')
+let input = document.getElementById("search-input");
 
 /** Bien */
 let play
@@ -32,8 +33,8 @@ let loaded
 let isListSong = false
 
 /** Menu Chon Nhac */
-function myFunction() {
-	document.getElementById("myDropdown").classList.toggle("show");
+function dropdown() {
+	document.getElementById("dropdown-content").classList.toggle("show");
 }
 
 /** List Nhac */
@@ -158,25 +159,31 @@ function SelectedRow(currentRow) {
 	currentRow.classList.add('nowplay')
 	currentRow.cells[0].innerHTML = `
 	<div class="equaliser">
-								<span class="line n1"></span>
-								<span class="line n2"></span>
-								<span class="line n3"></span>
-								<span class="line n4"></span>
-							</div>
+		<span class="line n1"></span>
+		<span class="line n2"></span>
+		<span class="line n3"></span>
+		<span class="line n4"></span>
+	</div>
 	`
 	indexPre = indexCur
 	indexCur = currentRow.rowIndex - 1
-	loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[4].textContent)
+	loadSong(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[4].textContent, currentRow.cells[5].textContent)
 	playSong()
 	prevRow = currentRow
+	input.value = ""
+	search()
+	currentRow.scrollIntoViewIfNeeded()
 }
 
+
 /** Hien thi nhac hien tai */
-function loadSong(title, artist, time) {
+function loadSong(title, artist, time, path) {
 	songTitle.innerHTML = title
 	songArtist.innerHTML = artist
 	endTime.innerHTML = time
-
+	let img = execSync("exiftool -picture -b -j " + path);
+	let imgBase64 = (JSON.parse(img)[0].Picture).substring(7)
+	document.getElementById("song-img").src = "data:image/jpeg;base64, " + imgBase64
 }
 
 /** Phat nhac */
@@ -209,7 +216,7 @@ function next() {
 		} else {
 			indexCur++
 		}
-		loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration))
+		loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration), listMusic[indexCur].path)
 		playSong()
 	}
 }
@@ -224,7 +231,7 @@ function prev() {
 		} else {
 			indexCur--
 		}
-		loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration))
+		loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration), listMusic[indexCur].path)
 		playSong()
 	}
 }
@@ -239,7 +246,7 @@ function random() {
 	while (indexCur == indexPre) {
 		indexCur = Math.floor(Math.random() * listMusic.length)
 	}
-	loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration))
+	loadSong(listMusic[indexCur].title, listMusic[indexCur].artist, convertToTime(listMusic[indexCur].duration), listMusic[indexCur].path)
 	playSong()
 }
 
@@ -262,6 +269,7 @@ function replay() {
 	if (prevRow) prevRow.classList.remove('nowplay')
 	let curRow = load.getElementsByTagName('tr')[indexCur]
 	curRow.classList.add('nowplay')
+	curRow.scrollIntoViewIfNeeded(false)
 	prevRow = curRow
 	isPlay = true
 	rangeValue.innerHTML = '0:00'
@@ -337,12 +345,12 @@ function alikeSong() {
 }
 
 /** Test file*/
-
 window.addEventListener('beforeunload', function e() {
 	let content = ''
 	for (let i = 0; i < listMusic.length; i++) {
 		content += listMusic[i].getInfo() + '\n'
 	}
+	stop()
 	fs.writeFile('input.txt', content, err => {
 		if (err) {
 			console.error(err);
@@ -359,10 +367,11 @@ function loadWindow() {
 			listMusic.push({
 				title: a[0],
 				artist: a[1],
-				duration: Math.floor(a[2]),
-				path: a[3],
+				genre: a[2],
+				duration: Math.floor(a[3]),
+				path: a[4],
 				getInfo: function () {
-					return this.title + '<|>' + this.artist + '<|>' + this.duration + '<|>' + this.path
+					return this.title + '<|>' + this.artist + '<|>' + this.genre + '<|>' + this.duration + '<|>' + this.path
 				}
 			})
 		}
@@ -387,7 +396,7 @@ function removeSong(currentRow) {
 		buttons: ['No', 'Yes'],
 		defaultId: 2,
 		message: 'Are you sure you want to delete this song?',
-		detail: tr.cells[1].textContent,
+		detail: tr.cells[1].textContent + ' - ' + tr.cells[2].textContent,
 	}
 	dialog.showMessageBox(null, options, (response) => {
 		if (response) {
@@ -397,8 +406,52 @@ function removeSong(currentRow) {
 		}
 	})
 }
+
 function removeByIndex(index) {
 	const a1 = listMusic.slice(0, index);
 	const a2 = listMusic.slice(index + 1, listMusic.length);
 	listMusic = a1.concat(a2)
 }
+
+// Convert string to unicode
+function stringToASCII(str) {
+	try {
+		return str.replace(/[àáảãạâầấẩẫậăằắẳẵặ]/g, 'a')
+			.replace(/[èéẻẽẹêềếểễệ]/g, 'e')
+			.replace(/[đ]/g, 'd')
+			.replace(/[ìíỉĩị]/g, 'i')
+			.replace(/[òóỏõọôồốổỗộơờớởỡợ]/g, 'o')
+			.replace(/[ùúủũụưừứửữự]/g, 'u')
+			.replace(/[ỳýỷỹỵ]/g, 'y')
+	} catch {
+		return ''
+	}
+}
+
+// Search songs
+function search() {
+	let found, filter, table, tr, td, i, j, k;
+	filter = input.value.toLowerCase();
+	table = document.getElementById("songs");
+	tr = table.getElementsByTagName("tr");
+	input.addEventListener("search", function (event) {
+		for (i = 0; i < tr.length; i++) {
+			tr[i].style.display = "";
+		}
+	})
+	for (i = 1; i < tr.length; i++) {
+		td = tr[i].querySelectorAll(".td-title, .td-artist");
+		for (j = 0; j < td.length; j++) {
+			if (stringToASCII(td[j].textContent.toLowerCase()).includes(stringToASCII(filter))) {
+				found = true;
+			}
+		}
+		if (found) {
+			tr[i].style.display = "";
+			found = false;
+		} else {
+			tr[i].style.display = "none";
+		}
+	}
+}
+

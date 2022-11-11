@@ -27,7 +27,7 @@
 			</div>
 			<div class="nav">
 				<li class="nav-item">
-					<a class="nav-link" href="#" onclick="openListSong(event, 'songs')" id="defaultOpen">
+					<a class="nav-link active" href="#" onclick="openListSong(event, 'songs')" id="defaultOpen">
 						Songs
 					</a>
 				</li>
@@ -38,7 +38,7 @@
 				</li>
 			</div>
 			<div class="search">
-				<input type="search" class="search-input" placeholder="Search" />
+				<input type="search" class="search-input" id="search-input" placeholder="Search" onkeyup="search()" />
 				<i class="search-icon fa-solid fa-magnifying-glass"></i>
 			</div>
 			<div class="open">
@@ -50,12 +50,12 @@
 					<input type="button" id="file-input" />
 				</div>
 				<div class="dropdown">
-					<button class="dropdown-button" onclick="myFunction()">
+					<button class="dropdown-button" onclick="dropdown()">
 						<i class="fa-solid fa-chevron-down"></i>
 					</button>
-					<div class="dropdown-content" id="myDropdown">
+					<div class="dropdown-content" id="dropdown-content">
 						<div class="open-button">
-							<label class="open-label" for="file-input">
+							<label class="open-label" for="file-input" onclick="dropdown()">
 								<i class="open-icon fa-regular fa-folder-open"></i>
 								<div class="open-text">
 									<h3>Open file(s)</h3>
@@ -65,7 +65,7 @@
 							<input type="button" id="file-input" />
 						</div>
 						<div class="open-button">
-							<label class="open-label" for="folder-input">
+							<label class="open-label" for="folder-input" onclick="dropdown()">
 								<i class="open-icon fa-solid fa-folder-plus"></i>
 								<div class="open-text">
 									<h3>Open forder</h3>
@@ -91,7 +91,7 @@
 					<col width="3%" />
 				</colgroup>
 				<thead>
-					<tr class="tr tr-title">
+					<tr class="tr">
 						<th class="th hashtag">
 							<i class="fa-solid fa-hashtag"></i>
 						</th>
@@ -120,7 +120,7 @@
 					<col width="3%" />
 				</colgroup>
 				<thead>
-					<tr class="tr tr-title">
+					<tr class="tr">
 						<th class="th hashtag">
 							<i class="fa-solid fa-hashtag"></i>
 						</th>
@@ -212,7 +212,7 @@
 		<div class="playbar">
 			<!-- Song detail -->
 			<div class="song">
-				<div class="song-img"><img id="song-img"></div>
+				<div class="song-img"><img id="song-img" src="./img/happy_music.svg"></div>
 				<div class="song-text-box">
 					<div class="song-wrap">
 						<p class="song-title" id="song-title"></p>
