@@ -184,8 +184,6 @@ const app = {
   /** Phat nhac */
   PlaySong: function () {
     pausebtn.classList.add('is-choice')
-    console.log(this.indexPre + ' ' + this.indexCur);
-    console.log(this.isNowDefault);
     if (this.indexPre != this.indexCur) {
       this.Replay()
     } else {
@@ -235,8 +233,6 @@ const app = {
     }
     else {
       for (let i = 1; i <= pageFavorite.childNodes.length; i += 3) {
-        console.log(pageFavorite.childNodes[i]);
-        console.log(Math.floor(pageFavorite.childNodes[i].cells[8].textContent) + ' ' + app.indexCur);
         if (Math.floor(pageFavorite.childNodes[i].cells[8].textContent) == app.indexCur) {
           app.curRow = pageFavorite.childNodes[i]
           app.indexPre = app.indexCur
@@ -550,7 +546,6 @@ const app = {
       dialog.showMessageBox(null, options, (response) => {
         if (response) {
           app.RemoveByIndex(Math.floor(index - 1))
-          console.log((index - 1) + " " + app.indexCur);
           app.RenderSong()
           app.RenderFavoriteSong()
           if ((index - 1) == app.indexCur) app.Random()
