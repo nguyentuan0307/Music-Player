@@ -1,6 +1,7 @@
 let { remote } = require('electron')
 let fs = require('fs')
 let { exec, execSync } = require("child_process")
+const { defaultCoreCipherList } = require('constants')
 let dialog = remote.dialog
 let mainWindow = remote.getCurrentWindow()
 let fileInput = document.getElementById('file-input')
@@ -119,8 +120,8 @@ const app = {
                             <td class="td td-time">${app.ConvertToTime(listMusic[index].duration)}</td>
                             <td style="display:none">${listMusic[index].path}</td>
                             <td class="td td-like button-choice is-choice" onclick='app.FavoriteChange(this)'><div class="tooltip"> <i class="fa-regular fa-heart button-icon button-not"></i> <p class="tooltiptext">Save to Your Library</p> </div> <div class="tooltip"> <i class="fa-solid fa-heart button-icon button-enable"></i> <p class="tooltiptext">Remove from Your Library</p> </div></td>
-                            <td class="td td-remove" onclick='app.RemoveSong(this)'><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                             <td style="display:none">${index}</td>
+                            <td class="td td-remove" onclick='app.RemoveSong(this)'><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                             </tr>
         `
       }
@@ -134,8 +135,8 @@ const app = {
                             <td class="td td-time">${app.ConvertToTime(listMusic[index].duration)}</td>
                             <td style="display:none">${listMusic[index].path}</td>
                             <td class="td td-like button-choice" onclick='app.FavoriteChange(this)'><div class="tooltip"> <i class="fa-regular fa-heart button-icon button-not"></i> <p class="tooltiptext">Save to Your Library</p> </div> <div class="tooltip"> <i class="fa-solid fa-heart button-icon button-enable"></i> <p class="tooltiptext">Remove from Your Library</p> </div></td>
-                            <td class="td td-remove" onclick='app.RemoveSong(this)'><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                             <td style="display:none">${index}</td>
+                            <td class="td td-remove" onclick='app.RemoveSong(this)'><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                             </tr>
         `
       }
@@ -158,8 +159,8 @@ const app = {
                             <td class="td td-time">${app.ConvertToTime(listMusic[index].duration)}</td>
                             <td style="display:none">${listMusic[index].path}</td>
                             <td class="td td-like button-choice is-choice" onclick='app.FavoriteChange(this)'><div class="tooltip"> <i class="fa-regular fa-heart button-icon button-not"></i> <p class="tooltiptext">Save to Your Library</p> </div> <div class="tooltip"> <i class="fa-solid fa-heart button-icon button-enable"></i> <p class="tooltiptext">Remove from Your Library</p> </div></td>
-                            <td class="td td-remove" onclick='app.RemoveSong(this)'><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
                             <td style="display:none">${index}</td>
+                            <td class="td td-remove" onclick='app.RemoveSong(this)'><div class="tooltip"> <i class="fa-solid fa-ban"></i> <p class="tooltiptext">Remove from the list</p> </div></td>
         </tr>
         `
         pageFavorite.insertAdjacentHTML('beforeend', tr)
@@ -212,31 +213,32 @@ const app = {
     }
     else app.isNowDefault = true
     app.indexPre = app.indexCur
-    app.indexCur = Math.floor(currentRow.cells[8].textContent)
+    app.indexCur = Math.floor(currentRow.cells[7].textContent)
     app.LoadInfor(currentRow.cells[1].textContent, currentRow.cells[2].textContent, currentRow.cells[4].textContent, currentRow.cells[5].textContent, (currentRow.cells[6].classList.contains('is-choice')).toString())
     app.PlaySong()
     app.prevRow = currentRow
     input.value = ""
     app.Search()
+    app.curRow.scrollIntoViewIfNeeded(true)
   },
   /** Thay doi hien thi dang phat nhac */
   ChangeNowPlay: function () {
     if (app.isNowDefault) {
       for (let i = 1; i <= pageDefault.childNodes.length; i += 3) {
-        if (Math.floor(pageDefault.childNodes[i].cells[8].textContent) == app.indexCur) {
+        if (Math.floor(pageDefault.childNodes[i].cells[7].textContent) == app.indexCur) {
           app.curRow = pageDefault.childNodes[i];
           app.indexPre = app.indexCur
-          app.indexCur = Math.floor(app.curRow.cells[8].textContent)
+          app.indexCur = Math.floor(app.curRow.cells[7].textContent)
           break
         }
       }
     }
     else {
       for (let i = 1; i <= pageFavorite.childNodes.length; i += 3) {
-        if (Math.floor(pageFavorite.childNodes[i].cells[8].textContent) == app.indexCur) {
+        if (Math.floor(pageFavorite.childNodes[i].cells[7].textContent) == app.indexCur) {
           app.curRow = pageFavorite.childNodes[i]
           app.indexPre = app.indexCur
-          app.indexCur = Math.floor(app.curRow.cells[8].textContent)
+          app.indexCur = Math.floor(app.curRow.cells[7].textContent)
           break
         }
       }
@@ -381,6 +383,9 @@ const app = {
       myDropDown.classList.toggle("show");
     }
 
+    myDropDown.onclick = function () {
+      myDropDown.classList.remove("show");
+    }
     /** Them nhac theo file */
     fileInput.onclick = async () => {
       let files = await dialog.showOpenDialog(mainWindow, {
@@ -488,10 +493,10 @@ const app = {
     /** Yeu thich bai hat */
     likeCurBtn.onclick = () => {
       if (likeCurBtn.classList.contains('is-choice')) {
-        listMusic[Math.floor(app.curRow.cells[8].textContent)].favorite = 'false'
+        listMusic[Math.floor(app.curRow.cells[7].textContent)].favorite = 'false'
       }
       else {
-        listMusic[Math.floor(app.curRow.cells[8].textContent)].favorite = 'true'
+        listMusic[Math.floor(app.curRow.cells[7].textContent)].favorite = 'true'
       }
       likeCurBtn.classList.toggle('is-choice')
       app.curRow.cells[6].classList.toggle('is-choice')
@@ -506,7 +511,7 @@ const app = {
   FavoriteChange: function (favorite) {
     app.isChangeFavorite = true
     let isFa = favorite.classList.contains('is-choice')
-    let index = Math.floor(favorite.parentNode.cells[8].textContent)
+    let index = Math.floor(favorite.parentNode.cells[7].textContent)
     if (app.indexCur == index && app.isNowDefault == false) { }
     else if (isFa) {
       pageDefault.childNodes[index * 3 + 1].classList.remove('is-choice')
@@ -584,27 +589,52 @@ const app = {
   },
   /** Tim kiem bai hat */
   Search: function () {
+    // let found, filter, table, tr, td, i, j, k;
+    // filter = input.value.toLowerCase();
+    // table = document.getElementById("songs");
+    // tr = table.getElementsByTagName("tr");
+    // input.addEventListener("search", function (event) {
+    //   for (i = 0; i < tr.length; i++) {
+    //     tr[i].style.display = "";
+    //   }
+    // })
+    // for (i = 1; i < tr.length; i++) {
+    //   td = tr[i].querySelectorAll(".td-title, .td-artist");
+    //   for (j = 0; j < td.length; j++) {
+    //     if (app.StringToASCII(td[j].textContent.toLowerCase()).includes(app.StringToASCII(filter))) {
+    //       found = true;
+    //     }
+    //   }
+    //   if (found) {
+    //     tr[i].style.display = "";
+    //     found = false;
+    //   } else {
+    //     tr[i].style.display = "none";
+    //   }
+    // }
     let found, filter, table, tr, td, i, j, k;
     filter = input.value.toLowerCase();
-    table = document.getElementById("songs");
-    tr = table.getElementsByTagName("tr");
-    input.addEventListener("search", function (event) {
-      for (i = 0; i < tr.length; i++) {
-        tr[i].style.display = "";
-      }
-    })
-    for (i = 1; i < tr.length; i++) {
-      td = tr[i].querySelectorAll(".td-title, .td-artist");
-      for (j = 0; j < td.length; j++) {
-        if (app.StringToASCII(td[j].textContent.toLowerCase()).includes(app.StringToASCII(filter))) {
-          found = true;
+    playlist = document.getElementsByClassName("playlist");
+    for (i = 0; i < playlist.length; i++) {
+      tr = playlist[i].getElementsByTagName("tr");
+      input.addEventListener("search", function (event) {
+        for (j = 1; j < tr.length; j++) {
+          tr[j].style.display = "";
         }
-      }
-      if (found) {
-        tr[i].style.display = "";
-        found = false;
-      } else {
-        tr[i].style.display = "none";
+      })
+      for (j = 1; j < tr.length; j++) {
+        td = tr[j].querySelectorAll(".td-title, .td-artist");
+        for (k = 0; k < td.length; k++) {
+          if (app.StringToASCII(td[k].textContent.toLowerCase()).includes(app.StringToASCII(filter))) {
+            found = true;
+          }
+        }
+        if (found) {
+          tr[j].style.display = "";
+          found = false;
+        } else {
+          tr[j].style.display = "none";
+        }
       }
     }
   },

@@ -278,6 +278,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 .open-button {
 	width: fit-content;
 	justify-self: end;
+
 }
 
 .open-button>input[type="file"] {
@@ -406,10 +407,16 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 	z-index: 1;
 }
 
+.playlist tbody {
+	/* background: url(./img/background.svg) no-repeat fixed center; */
+}
+
+
 .table {
 	width: 100%;
 	color: #b3b3b3;
 	border-collapse: collapse;
+	background: url(./img/background.svg) no-repeat fixed center;
 }
 
 .th {
